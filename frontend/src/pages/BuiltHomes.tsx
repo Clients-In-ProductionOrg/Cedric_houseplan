@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Grid3x3, List, CircleHelp, Heart, Home, Bed, Bath, Car, Search, X, ChevronDown, ChevronUp, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { API_ENDPOINTS } from '@/config/constants';
 import {
   Select,
   SelectContent,
@@ -483,10 +484,65 @@ export const BuiltHomes = () => {
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [builtHomesData, setBuiltHomesData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 6;
 
-  // Listen for search events from header
+  // Fetch built homes from backend on component mount
+  useEffect(() => {
+    const fetchBuiltHomes = async () => {
+      try {
+        setIsLoading(true);
+        console.log('Fetching built homes from API');
+        const response = await fetch(`${API_ENDPOINTS.PLANS}?display_section=built_homes`);
+        const data = await response.json();
+        console.log('API Response:', data);
+        
+        if (response.ok) {
+          const homesList = Array.isArray(data) ? data : data.results || [];
+          console.log('Built Homes List:', homesList);
+          
+          // Transform backend data to frontend format
+          const transformedHomes = homesList.map((home: any) => {
+            const allImages = [
+              ...(home.plan_images?.map((img: any) => img.image_url) || []),
+              ...(home.image_url ? [home.image_url] : [])
+            ];
+            const images = allImages.length > 0 ? allImages : [builtHomes[0]?.images?.[0]];
+            
+            return {
+              id: home.id,
+              title: home.name,
+              price: parseFloat(home.price),
+              bedrooms: home.bedrooms,
+              bathrooms: home.bathrooms,
+              garage: home.garage,
+              squareFeet: home.square_feet,
+              images: images,
+              isPopular: home.is_popular || home.is_best_selling,
+              isNew: home.is_new,
+              description: home.description,
+            };
+          });
+          
+          setBuiltHomesData(transformedHomes);
+        } else {
+          console.error('API Error - Status:', response.status);
+          // Fallback to local data if API fails
+          setBuiltHomesData(builtHomes);
+        }
+      } catch (error) {
+        console.error('Error fetching built homes:', error);
+        // Fallback to local data if API fails
+        setBuiltHomesData(builtHomes);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBuiltHomes();
+  }, []);
   useEffect(() => {
     const handleSearch = (event: Event) => {
       const customEvent = event as CustomEvent;
@@ -522,7 +578,7 @@ export const BuiltHomes = () => {
 
   // Filter and sort built homes
   const filteredAndSortedPlans = useMemo(() => {
-    let filtered = [...builtHomes];
+    let filtered = [...builtHomesData];
 
     // Apply filters
     if (filters.priceMin) {
@@ -593,7 +649,7 @@ export const BuiltHomes = () => {
     }
 
     return filtered;
-  }, [filters, sortBy, searchQuery]);
+  }, [filters, sortBy, searchQuery, builtHomesData]);
 
   // Pagination
   const totalPages = Math.ceil(filteredAndSortedPlans.length / itemsPerPage);

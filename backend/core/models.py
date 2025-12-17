@@ -54,6 +54,11 @@ class SiteSettings(models.Model):
 
 class HousePlan(models.Model):
     """Model for house plans"""
+    DISPLAY_SECTION_CHOICES = [
+        ('house_plans', 'House Plans'),
+        ('built_homes', 'Built Homes'),
+    ]
+    
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -65,6 +70,7 @@ class HousePlan(models.Model):
     depth = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, help_text="Depth in meters")
     image = models.ImageField(upload_to='plans/', blank=True, null=True, help_text="Primary/thumbnail image")
     video_url = models.URLField(blank=True, null=True, help_text="YouTube video URL")
+    display_section = models.CharField(max_length=20, choices=DISPLAY_SECTION_CHOICES, default='house_plans', help_text="Where this house plan will be displayed")
     is_popular = models.BooleanField(default=False, help_text="Show in 'Popular House Plans' section")
     is_best_selling = models.BooleanField(default=False, help_text="Show in 'Best-Selling Designs' section")
     is_new = models.BooleanField(default=False)

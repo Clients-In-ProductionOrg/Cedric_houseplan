@@ -79,8 +79,8 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 @admin.register(HousePlan)
 class HousePlanAdmin(admin.ModelAdmin):
     """Admin interface for HousePlan model"""
-    list_display = ('name', 'price', 'bedrooms', 'bathrooms', 'garage', 'square_feet', 'is_popular', 'is_best_selling', 'is_new', 'created_at')
-    list_filter = ('is_popular', 'is_best_selling', 'is_new', 'pet_friendly', 'bedrooms', 'created_at')
+    list_display = ('name', 'price', 'bedrooms', 'bathrooms', 'garage', 'square_feet', 'display_section', 'is_popular', 'is_best_selling', 'is_new', 'created_at')
+    list_filter = ('display_section', 'is_popular', 'is_best_selling', 'is_new', 'pet_friendly', 'bedrooms', 'created_at')
     search_fields = ('name', 'description')
     readonly_fields = ('created_at', 'updated_at')
     inlines = [HousePlanImageInline, FloorInline, FeatureInline, AmenityInline]
@@ -88,6 +88,10 @@ class HousePlanAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Basic Information', {
             'fields': ('name', 'description', 'price')
+        }),
+        ('Display Section', {
+            'fields': ('display_section',),
+            'description': 'Choose where this house plan will be displayed'
         }),
         ('Specifications', {
             'fields': ('bedrooms', 'bathrooms', 'garage', 'square_feet', 'width', 'depth')
@@ -97,30 +101,6 @@ class HousePlanAdmin(admin.ModelAdmin):
         }),
         ('Features & Status', {
             'fields': ('is_popular', 'is_best_selling', 'is_new', 'pet_friendly')
-        }),
-        ('Timestamps', {
-            'fields': ('created_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
-
-
-@admin.register(BuiltHome)
-class BuiltHomeAdmin(admin.ModelAdmin):
-    """Admin interface for BuiltHome model"""
-    list_display = ('name', 'location', 'completion_date', 'is_featured', 'created_at')
-    list_filter = ('is_featured', 'completion_date', 'created_at')
-    search_fields = ('name', 'location', 'description')
-    readonly_fields = ('created_at', 'updated_at')
-    fieldsets = (
-        ('Basic Information', {
-            'fields': ('name', 'description', 'location')
-        }),
-        ('Media', {
-            'fields': ('image',)
-        }),
-        ('Details', {
-            'fields': ('completion_date', 'is_featured')
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),

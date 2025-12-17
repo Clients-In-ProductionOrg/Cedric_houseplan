@@ -33,7 +33,7 @@ class HousePlanViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = HousePlan.objects.all()
     serializer_class = serializers.HousePlanSerializer
     permission_classes = [permissions.AllowAny]
-    filterset_fields = ['is_popular', 'bedrooms']
+    filterset_fields = ['is_popular', 'bedrooms', 'display_section']
     search_fields = ['name', 'description']
     ordering_fields = ['price', 'created_at']
 

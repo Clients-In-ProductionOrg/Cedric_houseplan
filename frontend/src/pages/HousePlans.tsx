@@ -575,7 +575,7 @@ export const HousePlans = () => {
     const fetchPlans = async () => {
       try {
         console.log('Fetching house plans from API');
-        const response = await fetch(API_ENDPOINTS.PLANS);
+        const response = await fetch(`${API_ENDPOINTS.PLANS}?display_section=house_plans`);
         const data = await response.json();
         console.log('API Response:', data);
         
