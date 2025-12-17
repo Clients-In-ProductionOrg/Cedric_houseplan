@@ -45,16 +45,12 @@ class HousePlanImageSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         """Return full URL for image"""
         if obj.image and obj.image.name:
-            try:
-                request = self.context.get('request')
-                if request:
-                    return request.build_absolute_uri(obj.image.url)
-            except:
-                pass
-            # Fallback URL construction
-            image_url = f"/media/{obj.image.name}" if obj.image.name else None
-            if image_url:
-                return f"http://127.0.0.1:8000{image_url}"
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            # For non-request context (e.g., serialization without request)
+            image_url = f"/media/{obj.image.name}"
+            return image_url
         return None
     
     class Meta:
@@ -73,16 +69,12 @@ class HousePlanSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         """Return full URL for primary image"""
         if obj.image and obj.image.name:
-            try:
-                request = self.context.get('request')
-                if request:
-                    return request.build_absolute_uri(obj.image.url)
-            except:
-                pass
-            # Fallback URL construction
-            image_url = f"/media/{obj.image.name}" if obj.image.name else None
-            if image_url:
-                return f"http://127.0.0.1:8000{image_url}"
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            # For non-request context (e.g., serialization without request)
+            image_url = f"/media/{obj.image.name}"
+            return image_url
         return None
     
     class Meta:

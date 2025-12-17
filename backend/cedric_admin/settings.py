@@ -129,7 +129,7 @@ CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = True
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = [
+default_cors_origins = [
     'http://localhost:8080',
     'http://127.0.0.1:8080',
     'http://localhost:8081',
@@ -141,7 +141,9 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'https://cedric-houseplan-tau.vercel.app',
+    'https://cedric-houseplan2.vercel.app',
 ]
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default=','.join(default_cors_origins)).split(',')
 
 # Allow credentials in CORS requests
 CORS_ALLOW_CREDENTIALS = True

@@ -12,8 +12,7 @@ admin.site.site_header = "Cedric House Planning Admin"
 admin.site.site_title = "Admin Panel"
 admin.site.index_title = "Welcome to Cedric Admin Dashboard"
 
-# Set the site URL to frontend homepage
-admin.site.site_url = "http://localhost:8080/"
+# Site URL will be set based on environment - remove hardcoded localhost
 
 
 # Inline admin classes
