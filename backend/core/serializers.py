@@ -89,7 +89,7 @@ class HousePlanSerializer(serializers.ModelSerializer):
         model = HousePlan
         fields = ['id', 'name', 'description', 'price', 'bedrooms', 'bathrooms', 'garage', 
                   'square_feet', 'width', 'depth', 'image', 'image_url', 'plan_images', 'video_url', 
-                  'is_popular', 'is_best_selling', 'is_new', 'pet_friendly', 'floors', 'features', 'amenities', 
+                  'display_section', 'is_popular', 'is_best_selling', 'is_new', 'pet_friendly', 'floors', 'features', 'amenities', 
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
