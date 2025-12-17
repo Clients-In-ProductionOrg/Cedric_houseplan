@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Phone, Mail, Clock, MapPin, Facebook, MessageCircle, Music, Home } from 'lucide-react';
+import { API_ENDPOINTS } from '@/config/constants';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +31,7 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/core/contacts/', {
+      const response = await fetch(API_ENDPOINTS.CONTACTS, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

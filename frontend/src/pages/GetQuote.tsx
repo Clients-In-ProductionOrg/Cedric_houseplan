@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Home, Palette, Bed, DollarSign, Send, CheckCircle, MessageCircle } from 'lucide-react';
+import { API_ENDPOINTS } from '@/config/constants';
 
 const GetQuote = () => {
   const [formData, setFormData] = useState({
@@ -53,7 +54,7 @@ ${formData.description}
 
     try {
       // Send data to backend API
-      const response = await fetch('http://127.0.0.1:8000/api/core/quotes/', {
+      const response = await fetch(API_ENDPOINTS.QUOTES, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

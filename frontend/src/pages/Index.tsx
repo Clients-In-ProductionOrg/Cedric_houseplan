@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
-import Header from "@/components/Header";
-import { API_ENDPOINTS } from "@/config/constants";
+import Header from "@/components/Header";import { API_BASE_URL } from '@/config/constants';import { API_ENDPOINTS } from "@/config/constants";
 import heroHouse from "@/assets/hero-house.jpg";
 import houseMadison from "@/assets/house-madison.jpg";
 import houseOakwood from "@/assets/house-oakwood.jpg";
@@ -481,7 +480,7 @@ const Index = () => {
           <div className="pt-8 border-t border-border/20 text-center text-sm">
             <p className="mb-2">© 2024 Cedric House Planning and Construction. All rights reserved.</p>
             <p className="text-xs">Website Developers: <a href="#" className="text-red-600 hover:text-red-700 hover:underline">TAD Developers</a></p>
-            <p className="text-xs mt-3"><a href="http://127.0.0.1:8000/admin/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 hover:underline">Admin Site</a></p>
+            <p className="text-xs mt-3"><a href={`${API_BASE_URL}/admin/`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 hover:underline">Admin Site</a></p>
           </div>
         </div>
       </footer>
