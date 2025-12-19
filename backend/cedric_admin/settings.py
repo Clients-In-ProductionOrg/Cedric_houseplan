@@ -32,8 +32,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # MUST be first for CORS to work!
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -152,6 +152,10 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOWED_ORIGINS = [
     os.environ.get('FRONTEND_URL', 'http://localhost:5173'),
 ]
+
+# TEMPORARY: Allow all origins for debugging CORS issues
+# Remove this after CORS works! Set back to False for production
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Allow credentials in CORS requests (needed for session cookies)
 CORS_ALLOW_CREDENTIALS = True
