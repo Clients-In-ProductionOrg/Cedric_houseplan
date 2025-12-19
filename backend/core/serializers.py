@@ -2,6 +2,7 @@
 Serializers for core app
 """
 from rest_framework import serializers
+from django.conf import settings
 from .models import HousePlan, BuiltHome, Contact, Quote, Purchase, SiteSettings, Floor, Feature, Amenity, HousePlanImage
 
 
@@ -45,16 +46,24 @@ class HousePlanImageSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         """Return full URL for image"""
         if obj.image and obj.image.name:
+            relative_url = f"/media/{obj.image.name}"
             try:
                 request = self.context.get('request')
                 if request:
-                    return request.build_absolute_uri(obj.image.url)
+                    # Try to build absolute URI from request
+                    return request.build_absolute_uri(relative_url)
             except:
                 pass
-            # Fallback URL construction
-            image_url = f"/media/{obj.image.name}" if obj.image.name else None
-            if image_url:
-                return f"http://127.0.0.1:8000{image_url}"
+            
+            # Fallback: use BACKEND_URL from settings
+            try:
+                backend_url = settings.BACKEND_URL.rstrip('/')
+                return f"{backend_url}{relative_url}"
+            except:
+                pass
+            
+            # Last resort: just return relative path
+            return relative_url
         return None
     
     class Meta:
@@ -73,16 +82,24 @@ class HousePlanSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         """Return full URL for primary image"""
         if obj.image and obj.image.name:
+            relative_url = f"/media/{obj.image.name}"
             try:
                 request = self.context.get('request')
                 if request:
-                    return request.build_absolute_uri(obj.image.url)
+                    # Try to build absolute URI from request
+                    return request.build_absolute_uri(relative_url)
             except:
                 pass
-            # Fallback URL construction
-            image_url = f"/media/{obj.image.name}" if obj.image.name else None
-            if image_url:
-                return f"http://127.0.0.1:8000{image_url}"
+            
+            # Fallback: use BACKEND_URL from settings
+            try:
+                backend_url = settings.BACKEND_URL.rstrip('/')
+                return f"{backend_url}{relative_url}"
+            except:
+                pass
+            
+            # Last resort: just return relative path
+            return relative_url
         return None
     
     class Meta:
