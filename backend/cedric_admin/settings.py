@@ -36,9 +36,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # MUST be first for CORS to work!
+    'corsheaders.middleware.CorsMiddleware',  # MUST be first for CORS
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',  # MUST be before CSRF!
+    'django.contrib.sessions.middleware.SessionMiddleware',  # MUST be before CSRF
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -72,7 +72,7 @@ IS_PRODUCTION = not DEBUG
 # Security settings for production
 SECURE_SSL_REDIRECT = IS_PRODUCTION
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-USE_X_FORWARDED_HOST = True  # Required for Render proxy to detect correct hostname
+USE_X_FORWARDED_HOST = True  # Required for Render proxy
 SECURE_HSTS_SECONDS = 31536000 if IS_PRODUCTION else 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = IS_PRODUCTION
 SECURE_HSTS_PRELOAD = IS_PRODUCTION
@@ -104,18 +104,10 @@ else:
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
 # Internationalization
@@ -140,42 +132,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ADMIN_URL = 'admin/'
 
 # Session and security settings
-SESSION_COOKIE_SECURE = IS_PRODUCTION  # HTTPS only in production
+SESSION_COOKIE_SECURE = IS_PRODUCTION
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax' if IS_PRODUCTION else 'Lax'
 
-CSRF_COOKIE_SECURE = IS_PRODUCTION  # HTTPS only in production
+CSRF_COOKIE_SECURE = IS_PRODUCTION
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Lax' if IS_PRODUCTION else 'Lax'
 
 # CSRF trusted origins - required for POST requests from frontend
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'https://cedric-houseplan2.vercel.app')
 CSRF_TRUSTED_ORIGINS = [
-    os.environ.get('FRONTEND_URL', 'http://localhost:5173'),
+    FRONTEND_URL,
 ]
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
-    os.environ.get('FRONTEND_URL', 'http://localhost:5173'),
+    FRONTEND_URL,
 ]
-
-# TEMPORARY: Allow all origins for debugging CORS issues
-# Remove this after CORS works! Set back to False for production
-CORS_ALLOW_ALL_ORIGINS = True
-
-# Allow credentials in CORS requests (needed for session cookies)
 CORS_ALLOW_CREDENTIALS = True
-
-# Additional CORS settings
 CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+    'accept', 'accept-encoding', 'authorization', 'content-type',
+    'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with',
 ]
 
 # REST Framework settings
@@ -184,7 +162,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Changed to AllowAny for API access
+        'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
@@ -192,5 +170,6 @@ REST_FRAMEWORK = {
 # Admin login restrictions
 ADMIN_RESTRICT_TO_STAFF = True
 
-# Logout redirect URL - use environment variable
-LOGOUT_REDIRECT_URL = os.environ.get('BACKEND_URL', 'http://localhost:8000/') + 'admin/'
+# Logout redirect URL
+BACKEND_URL = os.environ.get('BACKEND_URL', 'https://cedric-houseplan-backend.onrender.com/')
+LOGOUT_REDIRECT_URL = BACKEND_URL + 'admin/'
